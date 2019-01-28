@@ -2,14 +2,21 @@ package com.bhome.web.talk.bean.db;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
@@ -32,6 +39,14 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime createAt = LocalDateTime.now();
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     @Column
     private String description;
 
@@ -44,6 +59,9 @@ public class User {
 
     @Column(nullable = false,unique = true,length = 128)
     private String phone;
+
+    @Column(nullable = false)
+    private String account;
 
     //头像允许为空
     @Column
@@ -59,6 +77,134 @@ public class User {
     @Column(unique = true)
     private String token;
 
-    @Column
-    private LocalTime updateAt;
+    @CreationTimestamp
+    @Column(nullable = false)
+    private LocalDateTime updateAt = LocalDateTime.now();
+
+    @CreationTimestamp
+    @Column(nullable = false)
+    private LocalDateTime lastReceviedAt=LocalDateTime.now();
+
+    @JoinColumn(name = "originId")
+    @LazyCollection(LazyCollectionOption.EXTRA)
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private Set<UserFollow> following = new HashSet<>();
+
+    //关注我的人
+    @JoinColumn(name = "followerId")
+    @LazyCollection(LazyCollectionOption.EXTRA)
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private Set<UserFollow> followers=new HashSet<>();
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(LocalDateTime createAt) {
+        this.createAt = createAt;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDateTime getLastReceivedAt() {
+        return lastReceivedAt;
+    }
+
+    public void setLastReceivedAt(LocalDateTime lastReceivedAt) {
+        this.lastReceivedAt = lastReceivedAt;
+    }
+
+    public String getPortrait() {
+        return portrait;
+    }
+
+    public void setPortrait(String portrait) {
+        this.portrait = portrait;
+    }
+
+    public String getPushId() {
+        return pushId;
+    }
+
+    public void setPushId(String pushId) {
+        this.pushId = pushId;
+    }
+
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
+    public LocalDateTime getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(LocalDateTime updateAt) {
+        this.updateAt = updateAt;
+    }
+
+    public LocalDateTime getLastReceviedAt() {
+        return lastReceviedAt;
+    }
+
+    public void setLastReceviedAt(LocalDateTime lastReceviedAt) {
+        this.lastReceviedAt = lastReceviedAt;
+    }
+
+    public Set<UserFollow> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(Set<UserFollow> following) {
+        this.following = following;
+    }
+
+    public Set<UserFollow> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(Set<UserFollow> followers) {
+        this.followers = followers;
+    }
 }

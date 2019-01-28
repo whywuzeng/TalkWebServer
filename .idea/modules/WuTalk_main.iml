@@ -4,7 +4,7 @@
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map>
-          <unit-entry name="hibernate.cfg.xml" />
+          <unit-entry name="hibernate.cfg.xml" value="5c654e9e-3fe9-4598-9d7d-ef2cdef20b21" />
         </datasource-map>
         <naming-strategy-map />
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../src/main/resources/hibernate.cfg.xml" />
@@ -16,7 +16,7 @@
           <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../src/main/webapp/WEB-INF/web.xml" />
         </descriptors>
         <webroots>
-          <root url="file://F:\gitProjeck\WTalk\WuTalk\src\main\webapp" relative="/" />
+          <root url="file://D:\Web\TalkWebServer\src\main\webapp" relative="/" />
         </webroots>
       </configuration>
     </facet>
