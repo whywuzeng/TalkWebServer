@@ -97,6 +97,12 @@ public class User implements Principal {
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private Set<UserFollow> followers=new HashSet<>();
 
+    //我所创建的群
+    @JoinColumn(name = "groupId")
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.EXTRA)
+    private Set<Group> groups = new HashSet<>();
+
     public String getName() {
         return name;
     }

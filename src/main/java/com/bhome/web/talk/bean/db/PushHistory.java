@@ -5,8 +5,10 @@ import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -15,61 +17,50 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 /**
- * Created by Administrator on 2019-01-29.
+ * Created by Administrator on 2019/1/29.
  * <p>
  * by author wz
  * <p>
  * com.bhome.web.talk.bean.db
  */
-@Entity()
-@Table(name = "TB_MESSAGE")
-public class Message {
-
-    public static final int type_unknow = 10001;
-    public static final int type_text = 10002;
-    public static final int type_audio = 10003;
-    public static final int type_pic = 10004;
-    public static final int type_file = 10005;
-
+@Entity
+@Table(name = "TB_PUSH_HISTORY")
+public class PushHistory {
 
     @Id
-    @PrimaryKeyJoinColumn
     @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(updatable = false, nullable = false)
+    @GenericGenerator(name = "uuid",strategy = "uuid2")
+    @PrimaryKeyJoinColumn
+    @Column(nullable = false,updatable = false)
     private String id;
 
-    @Column
-    private String attach;
-
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String context;
+    @Column()
+    private LocalDateTime arrivalAt ;
 
     @CreationTimestamp
     @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createAt = LocalDateTime.now();
 
-    @ManyToOne
-    @JoinColumn(name = "groupId")
-    private Group group;
-    @Column(updatable = false,insertable = false)
-    private String groupId;
+    @Column(nullable = false,columnDefinition = "BLOB")
+    private  String entity;
 
-    @ManyToOne
+    @Column
+    private int entityType;
+
+    @Column
+    private int receiverPushId;
+
+    @ManyToOne(optional = false,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "receiverId")
     private User receiver;
-    @Column(nullable = false, insertable = false)
+    @Column(nullable = false,updatable = false,insertable = false)
     private String receiverId;
 
-    @ManyToOne(optional = false)
+    @ManyToOne( fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "senderId")
     private User sender;
-    @Column(updatable = false, nullable = false, insertable = false)
+    @Column(updatable = false,insertable = false)
     private String senderId;
-
-    //默认值
-    @Column(nullable = false, updatable = false)
-    private int type;
 
     @CreationTimestamp
     @Column(nullable = false)
@@ -83,44 +74,44 @@ public class Message {
         this.id = id;
     }
 
-    public String getAttach() {
-        return attach;
+    public LocalDateTime getArrivalAt() {
+        return arrivalAt;
     }
 
-    public void setAttach(String attach) {
-        this.attach = attach;
+    public void setArrivalAt(LocalDateTime arrivalAt) {
+        this.arrivalAt = arrivalAt;
     }
 
-    public String getContext() {
-        return context;
+    public LocalDateTime getCreateAt() {
+        return createAt;
     }
 
-    public void setContext(String context) {
-        this.context = context;
+    public void setCreateAt(LocalDateTime createAt) {
+        this.createAt = createAt;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public String getEntity() {
+        return entity;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setEntity(String entity) {
+        this.entity = entity;
     }
 
-    public Group getGroup() {
-        return group;
+    public int getEntityType() {
+        return entityType;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setEntityType(int entityType) {
+        this.entityType = entityType;
     }
 
-    public String getGroupId() {
-        return groupId;
+    public int getReceiverPushId() {
+        return receiverPushId;
     }
 
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
+    public void setReceiverPushId(int receiverPushId) {
+        this.receiverPushId = receiverPushId;
     }
 
     public User getReceiver() {
@@ -153,14 +144,6 @@ public class Message {
 
     public void setSenderId(String senderId) {
         this.senderId = senderId;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
     }
 
     public LocalDateTime getUpdateAt() {

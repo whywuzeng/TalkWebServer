@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 
 /**
  * Created by Administrator on 2019-01-29.
@@ -22,7 +23,8 @@ import javax.persistence.PrimaryKeyJoinColumn;
  * <p>
  * com.bhome.web.talk.bean.db
  */
-@Entity(name = "TB_GROUP")
+@Entity()
+@Table(name = "TB_GROUP")
 public class Group {
 
     @Id
@@ -58,4 +60,68 @@ public class Group {
     private User owner;
     @Column(nullable = false,updatable = false,insertable = false)
     private String ownerId;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(LocalDateTime createAt) {
+        this.createAt = createAt;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPictrue() {
+        return pictrue;
+    }
+
+    public void setPictrue(String pictrue) {
+        this.pictrue = pictrue;
+    }
+
+    public LocalDateTime getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(LocalDateTime updateAt) {
+        this.updateAt = updateAt;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
 }
