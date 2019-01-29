@@ -157,7 +157,7 @@ public class UserFactory {
      * @param user
      * @return
      */
-    private static User upDataToken(User user)
+    public static User upDataToken(User user)
     {
         String token = UUID.randomUUID().toString();
         user.setToken(token);
@@ -169,7 +169,10 @@ public class UserFactory {
      * 更新User
      * @param user
      */
-    private static void updata(User user) {
-        Hib.queryOnly(session -> session.saveOrUpdate(user));
+    public static User updata(User user) {
+       return Hib.query(session -> {
+            session.saveOrUpdate(user);
+            return user;
+        });
     }
 }

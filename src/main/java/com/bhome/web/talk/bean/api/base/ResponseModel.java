@@ -30,6 +30,8 @@ public class ResponseModel<M> implements Serializable {
     public static final int ERROR_REGISTER = 5003;
     //登陆异常
     private static final int ERROR_LOGIN = 5004;
+    //账号有错误
+    private static final int ERROR_ACCOUNT= 5005;
 
     //服务器整体错误异常
     private static final int ERROR_SERVER =6001;
@@ -86,6 +88,10 @@ public class ResponseModel<M> implements Serializable {
 
     public static <M> ResponseModel<M> loginError(){
         return new ResponseModel<M>(ERROR_LOGIN,"error_login");
+    }
+
+    public static <M> ResponseModel<M> accountError(){
+        return new ResponseModel<M>(ERROR_ACCOUNT,"error_account");
     }
 
     public static <M> ResponseModel<M> serverError(){

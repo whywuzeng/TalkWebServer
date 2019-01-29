@@ -1,5 +1,7 @@
 package com.bhome.web.talk.Utils;
 
+import com.bhome.web.talk.provider.GsonProvider;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.Base64;
@@ -37,5 +39,12 @@ public class TextUtil {
                 .encodeToString(str.getBytes());
     }
 
+    /**
+     * json进行转换
+     */
+    public static String toJson(Object object)
+    {
+        return GsonProvider.getGson().toJson(object);
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.bhome.web.talk;
 
+import com.bhome.web.talk.provider.AuthRequsetFilter;
 import com.bhome.web.talk.provider.GsonProvider;
 import com.bhome.web.talk.service.AccountService;
 
@@ -21,6 +22,9 @@ public class Application extends ResourceConfig{
 //        register(JacksonJsonProvider.class);
 
         register(GsonProvider.class);
+
+        //要注册 拦截器
+        register(AuthRequsetFilter.class);
 
         // 注册日志打印输出
         register(Logger.class);
