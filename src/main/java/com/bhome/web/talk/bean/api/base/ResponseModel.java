@@ -32,6 +32,13 @@ public class ResponseModel<M> implements Serializable {
     private static final int ERROR_LOGIN = 5004;
     //账号有错误
     private static final int ERROR_ACCOUNT= 5005;
+    //自己不能关注自己
+    public static final int ERROR_NOFOLLOWINGSELF = 5006;
+    //没有找到用户
+    public static final int ERROR_NOFOUNDUSER= 5007;
+
+    //message
+    public static final int ERROR_MSGUSER_ISSAME= 7001;
 
     //服务器整体错误异常
     private static final int ERROR_SERVER =6001;
@@ -97,6 +104,19 @@ public class ResponseModel<M> implements Serializable {
     public static <M> ResponseModel<M> serverError(){
         return new ResponseModel<M>(ERROR_SERVER,"error_server");
     }
+
+    public static <M> ResponseModel<M> followError(){
+        return new ResponseModel<M>(ERROR_NOFOLLOWINGSELF,"error_nofollowingself");
+    }
+
+    public static <M> ResponseModel<M> noFoundError(){
+        return new ResponseModel<M>(ERROR_NOFOUNDUSER,"error_nofounduser");
+    }
+
+    public static <M> ResponseModel<M> catchErrorStr(int type,String typeStr){
+        return new ResponseModel<M>(type,typeStr);
+    }
+
 
     public static <M> ResponseModel<M> buildOK(M result){
         return new ResponseModel<M>(SUCEED,"ok",result);

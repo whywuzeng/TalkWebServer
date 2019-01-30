@@ -1,5 +1,7 @@
 package com.bhome.web.talk.bean.db;
 
+import com.bhome.web.talk.bean.api.message.MessageModel;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -30,6 +32,10 @@ public class Message {
     public static final int type_audio = 10003;
     public static final int type_pic = 10004;
     public static final int type_file = 10005;
+
+    public static final int receiver_user = 20001;
+    public static final int receiver_group = 20002;
+    public static final int receiver_noknow = 20003;
 
 
     @Id
@@ -74,6 +80,18 @@ public class Message {
     @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime updateAt = LocalDateTime.now();
+
+    public Message(User self, User receiver, MessageModel model) {
+        this.sender=self;
+        this.senderId=self.getId();
+        this.receiver=receiver;
+        this.receiverId=receiver.getId();
+        this.id=model.getId();
+        this.attach=model.getAttach();
+        this.context=model.getContext();
+        this.type=model.getType();
+    }
+
 
     public String getId() {
         return id;

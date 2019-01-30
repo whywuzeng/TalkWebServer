@@ -3,9 +3,11 @@ package com.bhome.web.talk.factory;
 import com.bhome.web.talk.Utils.Hib;
 import com.bhome.web.talk.Utils.TextUtil;
 import com.bhome.web.talk.bean.db.User;
+import com.bhome.web.talk.bean.db.UserFollow;
 import com.google.common.base.Strings;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -26,6 +28,19 @@ public class UserFactory {
                         ("from User where token =:token")
                 .setParameter("token",token)
                 .uniqueResult()
+        );
+    }
+
+    /**
+     * 根据ID查询
+     */
+    public static User findByUserId(String userId)
+    {
+        return Hib.query(session ->
+                (User) session.createQuery
+                        ("from User where id =:userId")
+                        .setParameter("userId",userId)
+                        .uniqueResult()
         );
     }
 
@@ -173,6 +188,84 @@ public class UserFactory {
        return Hib.query(session -> {
             session.saveOrUpdate(user);
             return user;
+        });
+    }
+
+    /**
+     * 获取关注人列表
+     */
+    public static Set<UserFollow> contact(User user)
+    {
+        return Hib.query(session -> {
+           session.load(user,user.getId());
+
+            return user.getFollowing();
+        });
+    }
+
+    /**
+     * 关注人
+     * @param self 自己
+     * @param target 别人
+     * @param alias 备注名
+     */
+    public static User follow(User self, User target, String alias) {
+        UserFollow follow = UserFactory.isFollow(self, target);
+        if (follow != null)
+        {
+            return follow.getFollower();
+        }
+
+       return Hib.query(session -> {
+           session.load(self,self.getId());
+           session.load(target,target.getId());
+
+            UserFollow selfFollow = new UserFollow();
+            selfFollow.setOrigin(self);
+            selfFollow.setFollower(target);
+            selfFollow.setAlies(alias);
+
+            UserFollow targetFollow = new UserFollow();
+            targetFollow.setOrigin(target);
+            targetFollow.setFollower(self);
+            targetFollow.setAlies(alias);
+
+            session.save(selfFollow);
+            session.save(targetFollow);
+
+            return target;
+        });
+    }
+
+    /**
+     * 查询是否已经关注
+     * @param self
+     * @param target
+     */
+    public static UserFollow isFollow(User self, User target) {
+       return Hib.query(session -> (UserFollow) session.createQuery
+               ("from UserFollow where originId=:originId and followerId =:followerId")
+               .setParameter("originId",self.getId())
+               .setParameter("followerId",target.getId())
+               .uniqueResult());
+
+    }
+
+    /**
+     * 查询name
+     * @param name
+     */
+    public static List<User> search(String name) {
+        if (Strings.isNullOrEmpty(name))
+        {
+            name="";
+        }
+         final String searchName = "%"+name+"%";
+       return  Hib.query(session -> {
+           return (List<User>) session.createQuery("from User where lower(name) like:name and portrait is not null and description is not null ")
+                    .setParameter("name",searchName)
+                   .setMaxResults(20)
+                    .list();
         });
     }
 }

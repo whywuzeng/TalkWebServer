@@ -48,7 +48,7 @@ public class PushHistory {
     private int entityType;
 
     @Column
-    private int receiverPushId;
+    private String receiverPushId;
 
     @ManyToOne(optional = false,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "receiverId")
@@ -90,6 +90,14 @@ public class PushHistory {
         this.createAt = createAt;
     }
 
+    public String getReceiverPushId() {
+        return receiverPushId;
+    }
+
+    public void setReceiverPushId(String receiverPushId) {
+        this.receiverPushId = receiverPushId;
+    }
+
     public String getEntity() {
         return entity;
     }
@@ -104,14 +112,6 @@ public class PushHistory {
 
     public void setEntityType(int entityType) {
         this.entityType = entityType;
-    }
-
-    public int getReceiverPushId() {
-        return receiverPushId;
-    }
-
-    public void setReceiverPushId(int receiverPushId) {
-        this.receiverPushId = receiverPushId;
     }
 
     public User getReceiver() {
