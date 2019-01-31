@@ -1,6 +1,6 @@
 package com.bhome.web.talk.Utils;
 
-import com.bhome.web.talk.bean.db.Message;
+import com.bhome.web.talk.bean.api.base.PushModel;
 import com.bhome.web.talk.bean.db.User;
 import com.gexin.rp.sdk.base.IBatch;
 import com.gexin.rp.sdk.base.IIGtPush;
@@ -43,11 +43,14 @@ public class PushDispatcher {
         this.batch = push.getBatch();
     }
 
-    public void addMessage(User receiver, Message message){
-        if (receiver == null||message == null || Strings.isNullOrEmpty(receiver.getPushId()))
+    public void addMessage(User receiver, PushModel model){
+        if (receiver == null||model == null || Strings.isNullOrEmpty(receiver.getPushId()))
             return;
 
-        BaseBatch baseBatch = buildMessage(message.getContext(), receiver.getId());
+        if (Strings.isNullOrEmpty(model.getEntityString()))
+            return;
+
+        BaseBatch baseBatch = buildMessage(model.getEntityString(), receiver.getId());
         batches.add(baseBatch);
     }
 
@@ -56,7 +59,11 @@ public class PushDispatcher {
         boolean ishaving =false;
 
         for (BaseBatch baseBatch : batches) {
-            batch.add(baseBatch.singleMessage,baseBatch.target);
+            try {
+                batch.add(baseBatch.singleMessage,baseBatch.target);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             ishaving =true;
         }
         if (!ishaving)

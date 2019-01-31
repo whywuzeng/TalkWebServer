@@ -3,6 +3,7 @@ package com.bhome.web.talk.factory;
 import com.bhome.web.talk.Utils.Hib;
 import com.bhome.web.talk.Utils.PushDispatcher;
 import com.bhome.web.talk.Utils.TextUtil;
+import com.bhome.web.talk.bean.api.base.PushModel;
 import com.bhome.web.talk.bean.card.MessageCard;
 import com.bhome.web.talk.bean.db.Message;
 import com.bhome.web.talk.bean.db.PushHistory;
@@ -46,10 +47,16 @@ public class PushFactory {
                session.save(history)
             );
 
+            PushModel pushModel = new PushModel();
+            pushModel.add(entity,messageCard.getType());
+
+            dispatcher.addMessage(recevier,pushModel);
 
         }else {
             //群消息
+
         }
 
+        dispatcher.submit();
     }
 }

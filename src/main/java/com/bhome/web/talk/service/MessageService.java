@@ -6,6 +6,7 @@ import com.bhome.web.talk.bean.card.MessageCard;
 import com.bhome.web.talk.bean.db.Message;
 import com.bhome.web.talk.bean.db.User;
 import com.bhome.web.talk.factory.MessageFactory;
+import com.bhome.web.talk.factory.PushFactory;
 import com.bhome.web.talk.factory.UserFactory;
 
 import javax.ws.rs.Consumes;
@@ -13,6 +14,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
+import static com.bhome.web.talk.bean.api.base.ResponseModel.ERROR_CREATE_FAILUE;
 
 /**
  * Created by Administrator on 2019-01-30.
@@ -43,15 +46,12 @@ public class MessageService extends BaseService{
             return ResponseModel.buildOK(new MessageCard(message));
         }
 
-        if (model.getReceiverType() == Message.receiver_user)
+        if(model.getReceiverType() == Message.receiver_group)
         {
+            return pushToGroup(model,self);
+        }else {
             return pushToUser(model,self);
         }
-        else if(model.getReceiverType() == Message.receiver_group)
-        {
-            return pushToGroup();
-        }
-
     }
 
     // 发送到人
@@ -74,10 +74,19 @@ public class MessageService extends BaseService{
     }
 
     // 发送到群
+    private ResponseModel<MessageCard> pushToGroup(MessageModel model, User self) {
+
+        return null;
+    }
 
     // 推送并构建一个返回信息
     private ResponseModel<MessageCard> pushMessageResponse(User self, Message message) {
 
+        if (message == null) {
+            return ResponseModel.catchErrorStr(ERROR_CREATE_FAILUE, "create message for database failure");
+        }
+        PushFactory.pushMessage(self, message);
 
+        return ResponseModel.buildOK(new MessageCard(message));
     }
 }

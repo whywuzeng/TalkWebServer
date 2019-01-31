@@ -43,6 +43,8 @@ public class ResponseModel<M> implements Serializable {
     //服务器整体错误异常
     private static final int ERROR_SERVER =6001;
 
+    //数据库创建失败
+    public static final int ERROR_CREATE_FAILUE = 6002;
 
     @Expose
     private int code;

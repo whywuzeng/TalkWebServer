@@ -25,6 +25,12 @@ public class PushModel {
         return this;
     }
 
+    public PushModel add(Entity entity)
+    {
+        entities.add(entity);
+        return this;
+    }
+
     public String getEntityString(){
         if (entities.size()>0)
         {
